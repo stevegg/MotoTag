@@ -5,14 +5,31 @@
  * GET     /games/:id          ->  show
  * PUT     /games/:id          ->  update
  * DELETE  /games/:id          ->  destroy
+ * GET     /games/me           ->  myGames
  */
 
 'use strict';
 
 var _ = require('lodash');
 var game = require('./game.model');
-var user = require('../user/user.model');
+var userController = require('../user/user.controller');
 
+exports.gamesForUser = function(req, res) {
+
+    var userId = req.params.id;
+
+    console.log('Getting games for user with id: ' + userId);
+        
+    game.find({'owner._id':userId}, function(err, games) {
+        console.log('got ' + games.length + ' results');
+        if ( games.length > 0 ) {
+            console.log(games[0]);
+        }
+        if (err ) { return handleError(res, err); }
+        return res.json(200, games);
+    }).populate('owner');
+
+};
 
 // Get list of games
 exports.index = function(req, res) {

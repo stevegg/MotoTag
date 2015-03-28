@@ -1,10 +1,16 @@
 'use strict';
 
 angular.module('motoTagApp')
-  .controller('MainCtrl', function ($scope, $http, socket) {
+  .controller('MainCtrl', function ($scope, $http, socket, Auth) {
 
+    $scope.serverUrl = 'http://localhost:9000';
+    $scope.getCurrentUser = Auth.getCurrentUser;
     $scope.games = [];
-    $http.get('/api/games').success(function(games) {
+    var url = '/api/games';
+    if ( Auth.isLoggedIn() ) {
+        url = '/api/games/user/' + $scope.getCurrentUser()._id;
+    }
+    $http.get( url ).success(function(games) {
       $scope.games = games;
       socket.syncUpdates('game', $scope.games);
     });

@@ -5,19 +5,25 @@
 
 'use strict';
 
+var fs = require('fs');
+
 var User = require('../api/user/user.model');
 var Game = require('../api/game/game.model');
+var Pic = require('../api/pic/pic.model');
+
 var steveUser;
 
 User.find({}).remove(function() {
   User.create({
     provider: 'local',
+    username: 'tuser',
     name: 'Test User',
     email: 'test@test.com',
     password: 'test'
   }, {
     provider: 'local',
     role: 'admin',
+    username: 'auser',
     name: 'Admin',
     email: 'admin@admin.com',
     password: 'admin'
@@ -25,26 +31,65 @@ User.find({}).remove(function() {
       console.log('finished populating users');
     }
   );
-  steveUser = User.create({
-    provider: 'local',
-    name: 'Steve Goyette',
-    email: 'steve@goyettefamily.com',
-    password: 'orange'
-  })
+
 });
 
 Game.find({}).remove(function() {
 
-  console.log(steveUser);
-  Game.create({
-    owner: steveUser._id,
-    name: 'My Game',
-    description: 'This is my sample game',
-    type: 1,
-    latitude: 49.2167,
-    longitude: 122.6000,
-    radius: 200
-  }, function() {
-    console.log('finished populating games');
-  })
+  // Create a user that will own some games
+  User.create({
+    provider: 'local',
+    username: 'sgoyette',
+    name: 'Steve Goyette',
+    email: 'steve@goyettefamily.com',
+    password: 'orange'
+  }, function(err, user) {
+
+    // Create the image
+    Pic.create({
+      owner: user,
+      data: fs.readFileSync(__dirname + '/game1.jpg'),
+      contentType: 'image/jpg'
+    }, function( err, pic ) {
+
+      Game.create({
+        owner: user,
+        name: 'Island Game',
+        description: 'This is my sample game played on Vancouver Island',
+        type: 1,
+        latitude: 49.2167,
+        longitude: 122.6000,
+        radius: 200,
+        pic: pic
+      }, function(err) {
+        if ( err ) {
+          console.log(err);
+        }
+        console.log('finished populating games');
+      });
+    });
+
+    Pic.create({
+      owner: user,
+      data: fs.readFileSync(__dirname + '/game2.jpg'),
+      contentType: 'image/jpg'
+    }, function(err, pic) {
+      Game.create({
+        owner: user,
+        name: 'Local Game',
+        description: 'This is another game in the area',
+        type: 1,
+        latitude: 49.2167,
+        longitude: 122.6000,
+        radius: 200,
+        pic: pic
+      }, function(err) {
+        if ( err ) {
+          console.log(err);
+        }
+        console.log('finished populating games');
+      });
+    });
+  });
+
 });

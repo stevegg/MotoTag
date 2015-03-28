@@ -11,13 +11,15 @@
 
 var _ = require('lodash');
 var game = require('./game.model');
+var user = require('../user/user.model');
+
 
 // Get list of games
 exports.index = function(req, res) {
     game.find(function (err, games) {
         if(err) { return handleError(res, err); }
         return res.json(200, games);
-    });
+    }).populate('owner');
 };
 
 // Get a single game
@@ -26,7 +28,7 @@ exports.show = function(req, res) {
         if(err) { return handleError(res, err); }
         if(!game) { return res.send(404); }
         return res.json(game);
-    });
+    }).populate('owner');
 };
 
 // Creates a new game in the DB.

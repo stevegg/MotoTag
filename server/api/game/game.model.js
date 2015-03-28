@@ -1,10 +1,13 @@
 'use strict';
 
+
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
+var userSchema = require('../user/user.model');
+
 
 var GameSchema = new Schema({
-    owner: {type: Schema.ObjectId, ref: 'UserSchema'},
+    owner: {type: Schema.ObjectId, ref: 'User'},
     name: String,
     description: String,
     type: Number,

@@ -37,7 +37,7 @@ Game.find({}).remove(function() {
 
   console.log(steveUser);
   Game.create({
-    owner: steveUser,
+    owner: steveUser._id,
     name: 'My Game',
     description: 'This is my sample game',
     type: 1,

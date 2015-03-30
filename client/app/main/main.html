@@ -21,7 +21,7 @@
       <h1 ng-hide='isLoggedIn()' class="page-header">Latest Games:</h1>
       <h1 ng-show='isLoggedIn()' class="page-header">My Games:</h1>
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="game in games">
-        <li><img src='{{serverUrl}}/api/pics/{{game.pic}}' width='265' border='0' alt='{{game.description}}'/><a href="#" tooltip="{{game.description}}">{{game.name}} ({{game.owner.username}})</a></li>
+        <li><img src='{{serverUrl}}/api/pics/{{game.pic}}' width='365' border='0' alt='{{game.description}}'/><a href="#" tooltip="{{game.description}}">{{game.name}} ({{game.owner.username}})</a></li>
       </ul>
     </div>
   </div>

@@ -5,6 +5,7 @@ angular.module('motoTagApp')
 
     $scope.serverUrl = 'http://localhost:9000';
     $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.games = [];
     var url = '/api/games';
     if ( Auth.isLoggedIn() ) {

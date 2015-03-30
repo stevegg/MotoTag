@@ -15,6 +15,7 @@ var GameSchema = new Schema({
     longitude: Number,
     radius: Number,
     pic: {type: Schema.ObjectId, ref: 'Pic'},
+    players: [{ type : Schema.ObjectId, ref: 'User' }],
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now }
 });
